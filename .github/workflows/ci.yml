@@ -1,35 +1,44 @@
-format:
-  name: Format Check
-  runs-on: ubuntu-latest
-  steps:
-    - name: Check out repository code
-      uses: actions/checkout@v4
+name: CI
 
-    - name: Set up Node.js version 20
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-    - name: Install dependencies
-      run: npm ci
+jobs:
+  format:
+    name: Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
 
-    - name: Run format check
-      run: npm run format:check
+      - name: Set up Node.js version 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-test:
-  name: test
-  runs-on: ubuntu-latest
-  steps:
-    - name: Check out repository code
-      uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Set up Node.js version 20
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
+      - name: Run format check
+        run: npm run format:check
 
-    - name: Install dependencies
-      run: npm ci
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
 
-    - name: Run tests
-      run: npm test
+      - name: Set up Node.js version 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
